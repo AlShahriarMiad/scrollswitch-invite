@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>You're invited to ScrollSwitch</title>
+  <meta name="description" content="Install ScrollSwitch with your friend's link and you both get a bonus streak freeze and the Lime theme.">
+  <meta property="og:title" content="You're invited to ScrollSwitch">
+  <meta property="og:description" content="Swap scrolling for learning. Install with this link and you both get a bonus streak freeze and the Lime theme.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#F2F0EB">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ScrollSwitch "Bento x Poster": paper, ink and one loud orange. */
+    :root {
+      --paper: #F2F0EB;
+      --tile: #FFFFFF;
+      --ink: #111111;
+      --muted: #55524C;
+      --orange: #FF4F00;
+      --lime: #C6F135;
+      --hairline: #CFCAC0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #111111;
+        --tile: #1E1D1B;
+        --ink: #F2F0EB;
+        --muted: #B5B0A6;
+        --hairline: #3A3834;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 400 16px/1.5 Inter, system-ui, sans-serif;
+    }
+    main {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: grid;
+      gap: 12px;
+    }
+    .wordmark { font: 400 22px/1 Anton, Impact, sans-serif; letter-spacing: .01em; margin: 0 0 12px; }
+    .tile { background: var(--tile); border-radius: 20px; padding: 20px; }
+    .hero { background: var(--orange); color: #111111; padding: 24px; }
+    .label { font: 700 12px/16px Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 8px; }
+    h1 { font: 400 clamp(48px, 15vw, 76px)/.95 Anton, Impact, sans-serif; margin: 0 0 12px; text-transform: uppercase; }
+    .hero p { margin: 0; font-size: 17px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .reward h2 { font: 400 26px/1.1 Anton, Impact, sans-serif; margin: 0 0 4px; }
+    .reward p { margin: 0; color: var(--muted); font-size: 14px; }
+    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--lime); vertical-align: -1px; margin-right: 6px; }
+    .about p { margin: 0; color: var(--muted); }
+    .cta {
+      display: block; text-align: center; text-decoration: none;
+      background: var(--ink); color: var(--paper);
+      font: 700 17px/1 Inter, sans-serif;
+      padding: 20px 24px; border-radius: 999px; margin-top: 12px;
+    }
+    .cta:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .fine { text-align: center; color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+    .code { font-weight: 700; letter-spacing: .12em; color: var(--ink); }
+    @media (max-width: 340px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="wordmark">SCROLLSWITCH</p>
+
+    <section class="tile hero">
+      <p class="label">A friend invited you</p>
+      <h1>Swap scrolling for learning</h1>
+      <p>ScrollSwitch takes turns with you: a bit of Instagram, then a bit of Duolingo. Nothing is ever blocked.</p>
+    </section>
+
+    <section class="row" aria-label="What you both get">
+      <div class="tile reward">
+        <p class="label">You both get</p>
+        <h2>A bonus streak freeze</h2>
+        <p>Covers a missed day, on top of the free one each week.</p>
+      </div>
+      <div class="tile reward">
+        <p class="label">And</p>
+        <h2><span class="swatch" aria-hidden="true"></span>Lime theme</h2>
+        <p>A new accent color for the app.</p>
+      </div>
+    </section>
+
+    <section class="tile about">
+      <p>Your progress stays on your phone. ScrollSwitch only sees which app is open, never what's on screen.</p>
+    </section>
+
+    <a class="cta" id="get" href="https://play.google.com/store/apps/details?id=com.scrollswitch">Get it on Google Play</a>
+    <p class="fine" id="note">For Android phones.</p>
+  </main>
+
+  <script>
+    // Carries the friend's invite code into the Play Store install referrer, where the app reads it once.
+    (function () {
+      var PACKAGE = "com.scrollswitch";
+      var code = (new URLSearchParams(location.search).get("c") || "").trim().toUpperCase();
+      if (!/^[A-HJ-NP-Z2-9]{6}$/.test(code)) return; // no code: a plain store link still works
+      var referrer = "utm_source=invite&utm_campaign=friend&utm_content=" + code;
+      document.getElementById("get").href =
+        "https://play.google.com/store/apps/details?id=" + PACKAGE + "&referrer=" + encodeURIComponent(referrer);
+      var note = document.getElementById("note");
+      note.textContent = "For Android phones. Invite code ";
+      var span = document.createElement("span");
+      span.className = "code";
+      span.textContent = code;
+      note.appendChild(span);
+    })();
+  </script>
+</body>
+</html>
