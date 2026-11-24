@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>You're invited to ScrollSwitch</title>
-  <meta name="description" content="Install ScrollSwitch with your friend's link and you both get a bonus streak freeze and the Lime theme.">
+  <meta name="description" content="Install ScrollSwitch with your friend's link and you both get a bonus streak freeze.">
   <meta property="og:title" content="You're invited to ScrollSwitch">
-  <meta property="og:description" content="Swap scrolling for learning. Install with this link and you both get a bonus streak freeze and the Lime theme.">
+  <meta property="og:description" content="Swap scrolling for learning. Install with this link and you both get a bonus streak freeze.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#F2F0EB">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,6 @@
       --ink: #111111;
       --muted: #55524C;
       --orange: #FF4F00;
-      --lime: #C6F135;
       --hairline: #CFCAC0;
     }
     @media (prefers-color-scheme: dark) {
@@ -53,10 +52,8 @@
     h1 { font: 400 clamp(48px, 15vw, 76px)/.95 Anton, Impact, sans-serif; margin: 0 0 12px; text-transform: uppercase; }
     .hero p { margin: 0; font-size: 17px; }
     .hero .label { margin-bottom: 16px; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .reward h2 { font: 400 26px/1.1 Anton, Impact, sans-serif; margin: 0 0 4px; }
     .reward p { margin: 0; color: var(--muted); font-size: 14px; }
-    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--lime); vertical-align: -1px; margin-right: 6px; }
     .about p { margin: 0; color: var(--muted); }
     .cta {
       display: block; text-align: center; text-decoration: none;
@@ -67,7 +64,6 @@
     .cta:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
     .fine { text-align: center; color: var(--muted); font-size: 13px; margin: 4px 0 0; }
     .code { font-weight: 700; letter-spacing: .12em; color: var(--ink); }
-    @media (max-width: 340px) { .row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -80,17 +76,10 @@
       <p>ScrollSwitch takes turns with you: a bit of Instagram, then a bit of Duolingo. Nothing is ever blocked.</p>
     </section>
 
-    <section class="row" aria-label="What you both get">
-      <div class="tile reward">
-        <p class="label">You both get</p>
-        <h2>A bonus streak freeze</h2>
-        <p>Covers a missed day, on top of the free one each week.</p>
-      </div>
-      <div class="tile reward">
-        <p class="label">And</p>
-        <h2><span class="swatch" aria-hidden="true"></span>Lime theme</h2>
-        <p>A new accent color for the app.</p>
-      </div>
+    <section class="tile reward" aria-label="What you both get">
+      <p class="label">You both get</p>
+      <h2>A bonus streak freeze</h2>
+      <p>Covers a missed day, on top of the free one each week.</p>
     </section>
 
     <section class="tile about">
