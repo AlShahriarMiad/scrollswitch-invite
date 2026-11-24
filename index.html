@@ -65,8 +65,6 @@
       padding: 20px 24px; border-radius: 999px; margin-top: 12px;
     }
     .cta:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
-    .cta.secondary { background: transparent; color: var(--ink); border: 2px solid var(--ink); margin-top: 0; }
-    [hidden] { display: none !important; }
     .fine { text-align: center; color: var(--muted); font-size: 13px; margin: 4px 0 0; }
     .code { font-weight: 700; letter-spacing: .12em; color: var(--ink); }
     @media (max-width: 340px) { .row { grid-template-columns: 1fr; } }
@@ -77,12 +75,12 @@
     <p class="wordmark">SCROLLSWITCH</p>
 
     <section class="tile hero">
-      <p class="label" id="label">A friend invited you</p>
-      <h1 id="headline">Swap scrolling for learning</h1>
-      <p id="lede">ScrollSwitch takes turns with you: a bit of Instagram, then a bit of Duolingo. Nothing is ever blocked.</p>
+      <p class="label">A friend invited you</p>
+      <h1>Swap scrolling for learning</h1>
+      <p>ScrollSwitch takes turns with you: a bit of Instagram, then a bit of Duolingo. Nothing is ever blocked.</p>
     </section>
 
-    <section class="row" id="rewards" aria-label="What you both get">
+    <section class="row" aria-label="What you both get">
       <div class="tile reward">
         <p class="label">You both get</p>
         <h2>A bonus streak freeze</h2>
@@ -99,79 +97,25 @@
       <p>Your progress stays on your phone. ScrollSwitch only sees which app is open, never what's on screen.</p>
     </section>
 
-    <a class="cta" id="open" href="#" hidden>Open in ScrollSwitch</a>
     <a class="cta" id="get" href="https://play.google.com/store/apps/details?id=com.scrollswitch">Get it on Google Play</a>
     <p class="fine" id="note">For Android phones.</p>
   </main>
 
   <script>
-    // Invite links (?c=CODE) send friends to Google Play with the code in the install referrer.
-    // Challenge links (&ch=ID&s=DATE&n=NAME) and result links (&r=ID&m=MINUTES&n=NAME) also open the
-    // app directly when it's installed; if it isn't, the challenge rides along in the referrer.
+    // Carries the friend's invite code into the Play Store install referrer, where the app reads it once.
     (function () {
       var PACKAGE = "com.scrollswitch";
-      var CODE = /^[A-HJ-NP-Z2-9]{6}$/, ID = /^[A-HJ-NP-Z2-9]{8}$/;
-      var q = new URLSearchParams(location.search);
-      var get = function (k) { return (q.get(k) || "").trim(); };
-      var code = get("c").toUpperCase(), ch = get("ch").toUpperCase(), r = get("r").toUpperCase();
-      var start = get("s"), minutes = parseInt(get("m"), 10);
-      var name = get("n").replace(/[^\p{L}\p{N} .'-]/gu, "").slice(0, 20).trim();
-      var $ = function (id) { return document.getElementById(id); };
-
-      var challenge = ID.test(ch) && /^\d{4}-\d{2}-\d{2}$/.test(start);
-      var result = !challenge && ID.test(r) && minutes >= 0 && minutes <= 10080;
-
-      // Install referrer: invite code, plus the challenge so a new install joins it.
-      var ref = [];
-      if (CODE.test(code)) ref.push("utm_source=invite", "utm_campaign=friend", "utm_content=" + code);
-      if (challenge) ref.push("ch=" + ch, "s=" + start, "n=" + encodeURIComponent(name));
-      var play = "https://play.google.com/store/apps/details?id=" + PACKAGE +
-        (ref.length ? "&referrer=" + encodeURIComponent(ref.join("&")) : "");
-      $("get").href = play;
-
-      if (challenge || result) {
-        // Opens the app if installed; otherwise Chrome falls back to the store link.
-        var params = new URLSearchParams();
-        if (CODE.test(code)) params.set("c", code);
-        if (challenge) { params.set("ch", ch); params.set("s", start); }
-        if (result) { params.set("r", r); params.set("m", String(minutes)); }
-        if (name) params.set("n", name);
-        $("open").href = "intent://link?" + params.toString() +
-          "#Intent;scheme=scrollswitch;package=" + PACKAGE +
-          ";S.browser_fallback_url=" + encodeURIComponent(play) + ";end";
-        $("open").hidden = false;
-        $("get").classList.add("secondary");
-        $("get").textContent = "New to ScrollSwitch? Get it on Google Play";
-      }
-
-      var who = name || "A friend";
-      if (challenge) {
-        var d = new Date(start + "T12:00:00");
-        var when = d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
-        document.title = who + " challenged you on ScrollSwitch";
-        $("label").textContent = who + " challenged you";
-        $("headline").textContent = "7 days of less scrolling";
-        $("lede").textContent = "Starts " + when + ". You each count your own scrolling on your phone. Whoever scrolls less wins.";
-        $("open").textContent = "Accept in ScrollSwitch";
-      } else if (result) {
-        var h = Math.floor(minutes / 60), m = minutes % 60;
-        var time = h === 0 ? m + " min" : (m === 0 ? h + "h" : h + "h " + m + "m");
-        document.title = who + "'s challenge result";
-        $("label").textContent = who + "'s result is in";
-        $("headline").textContent = time + " of scrolling";
-        $("lede").textContent = "That's " + (name || "their") + (name ? "'s" : "") + " total for the 7-day challenge. Open ScrollSwitch to see who scrolled less.";
-        $("open").textContent = "Compare in ScrollSwitch";
-        $("rewards").hidden = true;
-      }
-
-      if (CODE.test(code)) {
-        var note = $("note");
-        note.textContent = "For Android phones. Invite code ";
-        var span = document.createElement("span");
-        span.className = "code";
-        span.textContent = code;
-        note.appendChild(span);
-      }
+      var code = (new URLSearchParams(location.search).get("c") || "").trim().toUpperCase();
+      if (!/^[A-HJ-NP-Z2-9]{6}$/.test(code)) return; // no code: a plain store link still works
+      var referrer = "utm_source=invite&utm_campaign=friend&utm_content=" + code;
+      document.getElementById("get").href =
+        "https://play.google.com/store/apps/details?id=" + PACKAGE + "&referrer=" + encodeURIComponent(referrer);
+      var note = document.getElementById("note");
+      note.textContent = "For Android phones. Invite code ";
+      var span = document.createElement("span");
+      span.className = "code";
+      span.textContent = code;
+      note.appendChild(span);
     })();
   </script>
 </body>
